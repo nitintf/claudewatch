@@ -83,7 +83,7 @@ func run() error {
 		}
 	}
 
-	output := statusline.Render(status, &t, plan, usage, &cfg)
+	output := statusline.Render(&status, &t, plan, usage, &cfg)
 	// Leading reset clears stale ANSI state from previous renders.
 	// Non-breaking spaces prevent the terminal from collapsing whitespace.
 	output = "\x1b[0m" + strings.ReplaceAll(output, " ", "\u00A0")

@@ -40,7 +40,7 @@ type costInfo struct {
 
 // Parse decodes Claude Code's JSON status.
 func Parse(data []byte) (ClaudeStatus, error) {
-	var s ClaudeStatus
+	var s *ClaudeStatus
 	if err := json.Unmarshal(data, &s); err != nil {
 		return ClaudeStatus{}, fmt.Errorf("parsing status JSON: %w", err)
 	}
@@ -68,7 +68,7 @@ func hexToRGB(hex string) (r, g, b int) {
 }
 
 // Render produces the themed status line with raw ANSI codes.
-func Render(s ClaudeStatus, t *theme.Theme, plan string, usage *api.Usage, cfg *config.Config) string {
+func Render(s *ClaudeStatus, t *theme.Theme, plan string, usage *api.Usage, cfg *config.Config) string {
 	pipe := dim + fg(t.Colors.Muted) + " | " + reset
 
 	showPlan := plan != "" && config.Enabled(cfg.ShowPlan)
@@ -108,7 +108,7 @@ func Render(s ClaudeStatus, t *theme.Theme, plan string, usage *api.Usage, cfg *
 	return strings.Join(parts, pipe)
 }
 
-func renderModel(s ClaudeStatus, t *theme.Theme, plan string, showPlan bool) string {
+func renderModel(s *ClaudeStatus, t *theme.Theme, plan string, showPlan bool) string {
 	name := s.Model.DisplayName
 	if name == "" {
 		name = s.Model.ID
@@ -124,7 +124,7 @@ func renderModel(s ClaudeStatus, t *theme.Theme, plan string, showPlan bool) str
 	return result
 }
 
-func renderContext(s ClaudeStatus, t *theme.Theme) string {
+func renderContext(s *ClaudeStatus, t *theme.Theme) string {
 	var pct float64
 	if s.ContextWindow.UsedPercentage != nil {
 		pct = *s.ContextWindow.UsedPercentage
@@ -163,7 +163,7 @@ func renderExtra(extra *api.ExtraUsage, t *theme.Theme) string {
 		fg(t.Colors.Muted) + fmt.Sprintf("/$%d", limit) + reset
 }
 
-func renderCost(s ClaudeStatus, t *theme.Theme) string {
+func renderCost(s *ClaudeStatus, t *theme.Theme) string {
 	cost := s.Cost.TotalCostUSD
 	if cost <= 0 {
 		return ""
@@ -179,11 +179,11 @@ func renderCost(s ClaudeStatus, t *theme.Theme) string {
 		fg(t.Colors.Fg) + formatted + reset
 }
 
-func renderCwd(s ClaudeStatus, t *theme.Theme) string {
+func renderCwd(s *ClaudeStatus, t *theme.Theme) string {
 	return dim + fg(t.Colors.Muted) + "\uf07b " + s.Cwd + reset
 }
 
-func renderBranch(s ClaudeStatus, t *theme.Theme) string {
+func renderBranch(s *ClaudeStatus, t *theme.Theme) string {
 	return dim + fg(t.Colors.Muted) + "\ue725 " + s.Branch + reset
 }
 
