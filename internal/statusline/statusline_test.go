@@ -110,7 +110,10 @@ func TestRenderCost(t *testing.T) {
 		ContextWindow: contextWindow{UsedPercentage: ptrFloat(30)},
 		Cost:          costInfo{TotalCostUSD: 1.23},
 	}
-	out := Render(&s, testTheme(), "", nil, defaultCfg())
+	tr := true
+	cfg := defaultCfg()
+	cfg.ShowCost = &tr
+	out := Render(&s, testTheme(), "", nil, cfg)
 	if !strings.Contains(out, "$1.23") {
 		t.Error("expected $1.23 in output")
 	}

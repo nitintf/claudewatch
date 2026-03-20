@@ -10,13 +10,13 @@ import (
 // Config holds the user's claudewatch configuration.
 type Config struct {
 	Theme      string `toml:"theme"`
-	ShowPlan   *bool  `toml:"show_plan,omitempty"`
-	Show5h     *bool  `toml:"show_5h,omitempty"`
-	Show7d     *bool  `toml:"show_7d,omitempty"`
-	ShowExtra  *bool  `toml:"show_extra,omitempty"`
-	ShowCost   *bool  `toml:"show_cost,omitempty"`
-	ShowCwd    *bool  `toml:"show_cwd,omitempty"`
-	ShowBranch *bool  `toml:"show_branch,omitempty"`
+	ShowPlan   *bool  `toml:"show_plan"`
+	Show5h     *bool  `toml:"show_5h"`
+	Show7d     *bool  `toml:"show_7d"`
+	ShowExtra  *bool  `toml:"show_extra"`
+	ShowCost   *bool  `toml:"show_cost"`
+	ShowCwd    *bool  `toml:"show_cwd"`
+	ShowBranch *bool  `toml:"show_branch"`
 }
 
 func boolPtr(b bool) *bool { return &b }
@@ -29,7 +29,7 @@ func DefaultConfig() Config {
 		Show5h:     boolPtr(true),
 		Show7d:     boolPtr(true),
 		ShowExtra:  boolPtr(true),
-		ShowCost:   boolPtr(true),
+		ShowCost:   boolPtr(false),
 		ShowCwd:    boolPtr(false),
 		ShowBranch: boolPtr(false),
 	}

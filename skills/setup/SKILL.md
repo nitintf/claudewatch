@@ -12,16 +12,13 @@ Install claudewatch — a themed status line for Claude Code.
 
 2. **Install binary**: Run `go install github.com/nitintf/claudewatch@latest`
 
-3. **Register with Claude Code**: Run `claudewatch install`
+3. **Register with Claude Code**: Run `claudewatch install` — this also creates the default config file with all keys.
 
 4. **Verify**: Read `~/.claude/settings.json` and confirm statusLine is set.
 
 5. **Choose theme**: Ask which theme they want:
-   Options: dracula, catppuccin-mocha, catppuccin-latte, nord, tokyo-night, gruvbox, solarized-dark, solarized-light, one-dark, rosepine
+   Options: dracula (default), catppuccin-mocha, catppuccin-latte, nord, tokyo-night, gruvbox, solarized-dark, solarized-light, one-dark, rosepine
 
-6. **Write config**: Write to `~/.config/claudewatch/config.toml`:
-   ```toml
-   theme = "<chosen-theme>"
-   ```
+6. **Write config**: Read the existing config from `~/.config/claudewatch/config.toml`, update only the theme value, and write it back preserving all other keys.
 
-7. **Done**: Tell the user to restart Claude Code. Plan type and usage limits are auto-detected from credentials — no configuration needed.
+7. **Done**: Tell the user to restart Claude Code. Plan type and usage limits are auto-detected from credentials. Mention they can run `/claudewatch:config` to toggle individual segments on/off.

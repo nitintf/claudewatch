@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.0
+
+- `update` command — fetch latest version and re-register (`claudewatch update`)
+- `version` command — print installed version (`claudewatch version`)
+- `/claudewatch:update` skill for updating via Claude Code
+- Install now creates config file with all keys explicitly set
+- `show_cost` defaults to `false` (was `true`)
+- Uninstall preserves config file for future reinstalls
+- `/claudewatch:config` skill now covers all settings — theme + all segment toggles
+
 ## v0.3.0
 
 - Session cost display (`cost $1.23`) from Claude Code status JSON

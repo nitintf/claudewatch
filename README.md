@@ -94,5 +94,15 @@ Custom themes go in `~/.config/claudewatch/themes/*.toml`.
 | Command | Description |
 |---------|-------------|
 | `/claudewatch:setup` | Install binary and configure theme |
-| `/claudewatch:config` | Change theme interactively |
-| `/claudewatch:uninstall` | Remove claudewatch completely |
+| `/claudewatch:config` | Change theme and toggle segments |
+| `/claudewatch:update` | Update to latest version |
+| `/claudewatch:uninstall` | Remove claudewatch (keeps config) |
+
+## CLI commands
+
+| Command | Description |
+|---------|-------------|
+| `claudewatch install` | Register with Claude Code + create config |
+| `claudewatch uninstall` | Remove from Claude Code (keeps config) |
+| `claudewatch update` | Fetch latest version and re-register |
+| `claudewatch version` | Print installed version |

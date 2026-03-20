@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime/debug"
 	"strings"
 
 	"github.com/nitintf/claudewatch/internal/api"
@@ -24,12 +25,17 @@ func main() {
 			err = install()
 		case "uninstall":
 			err = uninstall()
+		case "update":
+			err = update()
+		case "version":
+			printVersion()
+			return
 		}
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
-		if os.Args[1] == "install" || os.Args[1] == "uninstall" {
+		if os.Args[1] == "install" || os.Args[1] == "uninstall" || os.Args[1] == "update" || os.Args[1] == "version" {
 			return
 		}
 	}
@@ -129,6 +135,16 @@ func install() error {
 		return err
 	}
 
+	// Create default config file if it doesn't exist.
+	cfgPath, err := config.Path()
+	if err == nil {
+		if _, statErr := os.Stat(cfgPath); os.IsNotExist(statErr) {
+			if saveErr := config.Save(config.DefaultConfig()); saveErr == nil {
+				fmt.Printf("  config:   %s\n", cfgPath)
+			}
+		}
+	}
+
 	fmt.Printf("Installed claudewatch as Claude Code status line\n")
 	fmt.Printf("  binary:   %s\n", binaryPath)
 	fmt.Printf("  settings: %s\n", settingsPath)
@@ -156,10 +172,6 @@ func uninstall() error {
 		}
 	}
 
-	// Remove config directory.
-	cfgDir := filepath.Join(home, ".config", "claudewatch")
-	_ = os.RemoveAll(cfgDir)
-
 	// Remove usage cache.
 	_ = os.Remove(filepath.Join(os.TempDir(), "claudewatch-usage.json"))
 
@@ -171,12 +183,52 @@ func uninstall() error {
 
 	fmt.Printf("Uninstalled claudewatch\n")
 	fmt.Printf("  removed statusLine from %s\n", settingsPath)
-	fmt.Printf("  removed config dir %s\n", cfgDir)
+	fmt.Printf("  kept config at ~/.config/claudewatch/config.toml\n")
 	if binPath != "" {
 		fmt.Printf("  removed binary %s\n", binPath)
 	}
 	fmt.Printf("\nRestart Claude Code to apply.\n")
 	return nil
+}
+
+func update() error {
+	// Show current version.
+	currentVersion := version()
+	fmt.Printf("Current version: %s\n", currentVersion)
+
+	// Fetch and install latest.
+	fmt.Printf("Fetching latest version...\n")
+	cmd := exec.Command("go", "install", "github.com/nitintf/claudewatch@latest")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("go install failed: %w", err)
+	}
+
+	// Show new version.
+	out, err := exec.Command("claudewatch", "version").Output()
+	if err == nil {
+		fmt.Printf("Updated to: %s", string(out))
+	}
+
+	// Re-register to update binary path in settings.
+	if err := install(); err != nil {
+		return fmt.Errorf("re-registering: %w", err)
+	}
+
+	return nil
+}
+
+func version() string {
+	info, ok := debug.ReadBuildInfo()
+	if !ok || info.Main.Version == "" || info.Main.Version == "(devel)" {
+		return "dev"
+	}
+	return info.Main.Version
+}
+
+func printVersion() {
+	fmt.Println(version())
 }
 
 func gitBranch() (string, error) {
