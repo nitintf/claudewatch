@@ -14,8 +14,6 @@ linters:
     - revive
 
 linters-settings:
-  govet:
-    shadow: true
   revive:
     rules:
       - name: exported
