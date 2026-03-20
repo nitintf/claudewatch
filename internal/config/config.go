@@ -9,12 +9,14 @@ import (
 
 // Config holds the user's claudewatch configuration.
 type Config struct {
-	Theme     string `toml:"theme"`
-	ShowPlan  *bool  `toml:"show_plan,omitempty"`
-	Show5h    *bool  `toml:"show_5h,omitempty"`
-	Show7d    *bool  `toml:"show_7d,omitempty"`
-	ShowExtra *bool  `toml:"show_extra,omitempty"`
-	ShowCost  *bool  `toml:"show_cost,omitempty"`
+	Theme      string `toml:"theme"`
+	ShowPlan   *bool  `toml:"show_plan,omitempty"`
+	Show5h     *bool  `toml:"show_5h,omitempty"`
+	Show7d     *bool  `toml:"show_7d,omitempty"`
+	ShowExtra  *bool  `toml:"show_extra,omitempty"`
+	ShowCost   *bool  `toml:"show_cost,omitempty"`
+	ShowCwd    *bool  `toml:"show_cwd,omitempty"`
+	ShowBranch *bool  `toml:"show_branch,omitempty"`
 }
 
 func boolPtr(b bool) *bool { return &b }
@@ -22,12 +24,14 @@ func boolPtr(b bool) *bool { return &b }
 // DefaultConfig returns the default configuration.
 func DefaultConfig() Config {
 	return Config{
-		Theme:     "dracula",
-		ShowPlan:  boolPtr(true),
-		Show5h:    boolPtr(true),
-		Show7d:    boolPtr(true),
-		ShowExtra: boolPtr(true),
-		ShowCost:  boolPtr(true),
+		Theme:      "dracula",
+		ShowPlan:   boolPtr(true),
+		Show5h:     boolPtr(true),
+		Show7d:     boolPtr(true),
+		ShowExtra:  boolPtr(true),
+		ShowCost:   boolPtr(true),
+		ShowCwd:    boolPtr(false),
+		ShowBranch: boolPtr(false),
 	}
 }
 

@@ -59,6 +59,8 @@ Restart Claude Code after installing.
 | 7-day limit | `7d ░░░ 2% Fri` | Anthropic usage API |
 | Extra usage | `$2/$100` | Anthropic usage API (when enabled) |
 | Session cost | `cost $1.23` | Claude Code status JSON |
+| Working dir | ` claudewatch` | Process cwd (off by default) |
+| Git branch | ` main` | `git rev-parse` (off by default) |
 
 Colors shift: blue < 50%, orange 50-80%, red > 80%.
 
@@ -69,12 +71,14 @@ Colors shift: blue < 50%, orange 50-80%, red > 80%.
 ```toml
 theme = "tokyo-night"
 
-# Toggle segments (all true by default)
-show_plan  = true    # Plan name in model bracket
-show_5h    = true    # 5-hour usage quota
-show_7d    = true    # 7-day usage quota
-show_extra = true    # Pay-as-you-go extra usage
-show_cost  = true    # Session cost
+# Toggle segments (all true by default unless noted)
+show_plan   = true    # Plan name in model bracket
+show_5h     = true    # 5-hour usage quota
+show_7d     = true    # 7-day usage quota
+show_extra  = true    # Pay-as-you-go extra usage
+show_cost   = true    # Session cost
+show_cwd    = false   # Working directory name
+show_branch = false   # Git branch
 ```
 
 Model name and context window are always shown. Plan and usage limits are auto-detected.

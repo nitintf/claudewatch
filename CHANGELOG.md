@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3.0
+
+- Session cost display (`cost $1.23`) from Claude Code status JSON
+- Working directory and git branch segments (off by default)
+- Configurable segments via `config.toml` — toggle plan, 5h, 7d, extra, cost, cwd, branch
+- Claude Code plugin marketplace support (`marketplace.json`)
+- Cross-platform releases: Windows (amd64, arm64) and Linux ARM64
+- Release script with patch/minor/major version bumping and changelog
+
 ## v0.2.0
 
 - Real-time usage data from Anthropic API (5h window, 7d limits)

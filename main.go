@@ -54,6 +54,14 @@ func run() error {
 		return err
 	}
 
+	// Populate environment info.
+	if wd, wdErr := os.Getwd(); wdErr == nil {
+		status.Cwd = filepath.Base(wd)
+	}
+	if branch, brErr := gitBranch(); brErr == nil {
+		status.Branch = branch
+	}
+
 	cfg, err := config.Load()
 	if err != nil {
 		return err
@@ -169,4 +177,12 @@ func uninstall() error {
 	}
 	fmt.Printf("\nRestart Claude Code to apply.\n")
 	return nil
+}
+
+func gitBranch() (string, error) {
+	out, err := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD").Output()
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(string(out)), nil
 }

@@ -19,6 +19,10 @@ type ClaudeStatus struct {
 	Model         modelInfo     `json:"model"`
 	ContextWindow contextWindow `json:"context_window"`
 	Cost          costInfo      `json:"cost"`
+
+	// Populated by main after parsing — not from JSON.
+	Cwd    string `json:"-"`
+	Branch string `json:"-"`
 }
 
 type modelInfo struct {
@@ -93,6 +97,14 @@ func Render(s ClaudeStatus, t *theme.Theme, plan string, usage *api.Usage, cfg *
 		}
 	}
 
+	if s.Cwd != "" && config.Enabled(cfg.ShowCwd) {
+		parts = append(parts, renderCwd(s, t))
+	}
+
+	if s.Branch != "" && config.Enabled(cfg.ShowBranch) {
+		parts = append(parts, renderBranch(s, t))
+	}
+
 	return strings.Join(parts, pipe)
 }
 
@@ -165,6 +177,14 @@ func renderCost(s ClaudeStatus, t *theme.Theme) string {
 	}
 	return fg(t.Colors.Muted) + "cost " + reset +
 		fg(t.Colors.Fg) + formatted + reset
+}
+
+func renderCwd(s ClaudeStatus, t *theme.Theme) string {
+	return dim + fg(t.Colors.Muted) + "\uf07b " + s.Cwd + reset
+}
+
+func renderBranch(s ClaudeStatus, t *theme.Theme) string {
+	return dim + fg(t.Colors.Muted) + "\ue725 " + s.Branch + reset
 }
 
 // progressBar renders filled and empty blocks with foreground colors.
