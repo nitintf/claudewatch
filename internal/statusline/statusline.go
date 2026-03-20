@@ -189,4 +189,3 @@ func formatReset(iso string) string {
 	}
 	return t.Local().Weekday().String()[:3]
 }
-
