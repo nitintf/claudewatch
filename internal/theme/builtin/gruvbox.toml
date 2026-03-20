@@ -1,0 +1,26 @@
+name = "gruvbox"
+author = "claudewatch"
+
+[colors]
+bg      = "#282828"
+fg      = "#ebdbb2"
+accent  = "#fe8019"
+success = "#b8bb26"
+warning = "#fabd2f"
+error   = "#fb4934"
+info    = "#83a598"
+muted   = "#665c54"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

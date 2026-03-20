@@ -1,0 +1,26 @@
+name = "one-dark"
+author = "claudewatch"
+
+[colors]
+bg      = "#282c34"
+fg      = "#abb2bf"
+accent  = "#61afef"
+success = "#98c379"
+warning = "#e5c07b"
+error   = "#e06c75"
+info    = "#56b6c2"
+muted   = "#5c6370"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

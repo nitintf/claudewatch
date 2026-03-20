@@ -1,0 +1,26 @@
+name = "solarized-light"
+author = "claudewatch"
+
+[colors]
+bg      = "#fdf6e3"
+fg      = "#657b83"
+accent  = "#268bd2"
+success = "#859900"
+warning = "#b58900"
+error   = "#dc322f"
+info    = "#2aa198"
+muted   = "#93a1a1"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

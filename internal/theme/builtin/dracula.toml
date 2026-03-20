@@ -1,0 +1,26 @@
+name = "dracula"
+author = "claudewatch"
+
+[colors]
+bg      = "#282a36"
+fg      = "#f8f8f2"
+accent  = "#bd93f9"
+success = "#50fa7b"
+warning = "#f1fa8c"
+error   = "#ff5555"
+info    = "#8be9fd"
+muted   = "#6272a4"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

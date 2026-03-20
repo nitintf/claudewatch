@@ -1,0 +1,26 @@
+name = "catppuccin-mocha"
+author = "claudewatch"
+
+[colors]
+bg      = "#1e1e2e"
+fg      = "#cdd6f4"
+accent  = "#cba6f7"
+success = "#a6e3a1"
+warning = "#f9e2af"
+error   = "#f38ba8"
+info    = "#89dceb"
+muted   = "#585b70"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

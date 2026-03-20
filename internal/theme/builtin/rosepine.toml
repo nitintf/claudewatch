@@ -1,0 +1,26 @@
+name = "rosepine"
+author = "claudewatch"
+
+[colors]
+bg      = "#191724"
+fg      = "#e0def4"
+accent  = "#c4a7e7"
+success = "#9ccfd8"
+warning = "#f6c177"
+error   = "#eb6f92"
+info    = "#31748f"
+muted   = "#6e6a86"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

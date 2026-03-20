@@ -1,0 +1,26 @@
+name = "catppuccin-latte"
+author = "claudewatch"
+
+[colors]
+bg      = "#eff1f5"
+fg      = "#4c4f69"
+accent  = "#8839ef"
+success = "#40a02b"
+warning = "#df8e1d"
+error   = "#d20f39"
+info    = "#04a5e5"
+muted   = "#9ca0b0"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

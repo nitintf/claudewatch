@@ -1,0 +1,26 @@
+name = "nord"
+author = "claudewatch"
+
+[colors]
+bg      = "#2e3440"
+fg      = "#eceff4"
+accent  = "#88c0d0"
+success = "#a3be8c"
+warning = "#ebcb8b"
+error   = "#bf616a"
+info    = "#81a1c1"
+muted   = "#4c566a"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"

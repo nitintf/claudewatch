@@ -1,0 +1,12 @@
+{
+  "name": "claudewatch",
+  "description": "Beautiful themed status line for Claude Code with real-time usage tracking, progress bars, and 10 built-in themes",
+  "version": "0.2.0",
+  "author": {
+    "name": "Nitin Panwar",
+    "url": "https://github.com/nitintf"
+  },
+  "repository": "https://github.com/nitintf/claudewatch",
+  "license": "MIT",
+  "keywords": ["statusline", "status-line", "theme", "usage-tracking"]
+}

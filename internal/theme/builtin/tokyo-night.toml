@@ -1,0 +1,26 @@
+name = "tokyo-night"
+author = "claudewatch"
+
+[colors]
+bg      = "#1a1b26"
+fg      = "#c0caf5"
+accent  = "#7aa2f7"
+success = "#9ece6a"
+warning = "#e0af68"
+error   = "#f7768e"
+info    = "#7dcfff"
+muted   = "#565f89"
+
+[separators]
+left       = "\ue0b0"
+left_thin  = "\ue0b1"
+right      = "\ue0b2"
+right_thin = "\ue0b3"
+
+[icons]
+model   = "\uf0e7"
+context = "\uf085"
+cost    = "\uf155"
+tools   = "\uf0ad"
+warn    = "\uf071"
+ok      = "\uf058"
