@@ -15,21 +15,21 @@ import (
 // ClaudeStatus represents the JSON piped from Claude Code.
 type ClaudeStatus struct {
 	SessionID     string        `json:"session_id"`
-	Model         ModelInfo     `json:"model"`
-	ContextWindow ContextWindow `json:"context_window"`
-	Cost          CostInfo      `json:"cost"`
+	Model         modelInfo     `json:"model"`
+	ContextWindow contextWindow `json:"context_window"`
+	Cost          costInfo      `json:"cost"`
 }
 
-type ModelInfo struct {
+type modelInfo struct {
 	ID          string `json:"id"`
 	DisplayName string `json:"display_name"`
 }
 
-type ContextWindow struct {
+type contextWindow struct {
 	UsedPercentage *float64 `json:"used_percentage"`
 }
 
-type CostInfo struct {
+type costInfo struct {
 	TotalCostUSD float64 `json:"total_cost_usd"`
 }
 
@@ -51,25 +51,25 @@ func fg(hex string) string {
 	return fmt.Sprintf("\x1b[38;2;%d;%d;%dm", r, g, b)
 }
 
-func hexToRGB(hex string) (int, int, int) {
+func hexToRGB(hex string) (r, g, b int) {
 	hex = strings.TrimPrefix(hex, "#")
 	if len(hex) != 6 {
 		return 255, 255, 255
 	}
-	r, _ := strconv.ParseInt(hex[0:2], 16, 64)
-	g, _ := strconv.ParseInt(hex[2:4], 16, 64)
-	b, _ := strconv.ParseInt(hex[4:6], 16, 64)
-	return int(r), int(g), int(b)
+	rv, _ := strconv.ParseInt(hex[0:2], 16, 64)
+	gv, _ := strconv.ParseInt(hex[2:4], 16, 64)
+	bv, _ := strconv.ParseInt(hex[4:6], 16, 64)
+	return int(rv), int(gv), int(bv)
 }
 
 // Render produces the themed status line with raw ANSI codes.
-func Render(s ClaudeStatus, t theme.Theme, plan string, usage *api.Usage) string {
+func Render(s ClaudeStatus, t *theme.Theme, plan string, usage *api.Usage) string {
 	pipe := dim + fg(t.Colors.Muted) + " | " + reset
 
-	var parts []string
-
-	parts = append(parts, renderModel(s, t, plan))
-	parts = append(parts, renderContext(s, t))
+	parts := []string{
+		renderModel(s, t, plan),
+		renderContext(s, t),
+	}
 
 	if usage != nil {
 		if usage.FiveHour != nil {
@@ -86,7 +86,7 @@ func Render(s ClaudeStatus, t theme.Theme, plan string, usage *api.Usage) string
 	return strings.Join(parts, pipe)
 }
 
-func renderModel(s ClaudeStatus, t theme.Theme, plan string) string {
+func renderModel(s ClaudeStatus, t *theme.Theme, plan string) string {
 	name := s.Model.DisplayName
 	if name == "" {
 		name = s.Model.ID
@@ -102,7 +102,7 @@ func renderModel(s ClaudeStatus, t theme.Theme, plan string) string {
 	return result
 }
 
-func renderContext(s ClaudeStatus, t theme.Theme) string {
+func renderContext(s ClaudeStatus, t *theme.Theme) string {
 	var pct float64
 	if s.ContextWindow.UsedPercentage != nil {
 		pct = *s.ContextWindow.UsedPercentage
@@ -113,7 +113,7 @@ func renderContext(s ClaudeStatus, t theme.Theme) string {
 		fg(color) + fmt.Sprintf("%.0f%%", pct) + reset
 }
 
-func renderQuota(label string, q *api.QuotaLimit, t theme.Theme) string {
+func renderQuota(label string, q *api.QuotaLimit, t *theme.Theme) string {
 	pct := q.Utilization
 	color := barColor(pct, t)
 	result := fg(t.Colors.Muted) + label + " " + reset +
@@ -126,7 +126,7 @@ func renderQuota(label string, q *api.QuotaLimit, t theme.Theme) string {
 	return result
 }
 
-func renderExtra(extra *api.ExtraUsage, t theme.Theme) string {
+func renderExtra(extra *api.ExtraUsage, t *theme.Theme) string {
 	if extra == nil || !extra.IsEnabled || extra.MonthlyLimit == nil || extra.UsedCredits == nil {
 		return ""
 	}
@@ -156,7 +156,7 @@ func progressBar(pct float64, width int, fillColor, emptyColor string) string {
 		dim + fg(emptyColor) + strings.Repeat("\u2591", empty) + reset
 }
 
-func barColor(pct float64, t theme.Theme) string {
+func barColor(pct float64, t *theme.Theme) string {
 	switch {
 	case pct >= 80:
 		return t.Colors.Error
@@ -189,3 +189,4 @@ func formatReset(iso string) string {
 	}
 	return t.Local().Weekday().String()[:3]
 }
+

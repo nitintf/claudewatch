@@ -10,8 +10,8 @@ import (
 
 func ptrFloat(f float64) *float64 { return &f }
 
-func testTheme() theme.Theme {
-	return theme.Theme{
+func testTheme() *theme.Theme {
+	return &theme.Theme{
 		Name: "test",
 		Colors: theme.Colors{
 			Bg: "#282a36", Fg: "#f8f8f2", Accent: "#bd93f9",
@@ -51,8 +51,8 @@ func TestParseInvalid(t *testing.T) {
 
 func TestRenderWithUsage(t *testing.T) {
 	s := ClaudeStatus{
-		Model:         ModelInfo{DisplayName: "Opus"},
-		ContextWindow: ContextWindow{UsedPercentage: ptrFloat(22)},
+		Model:         modelInfo{DisplayName: "Opus"},
+		ContextWindow: contextWindow{UsedPercentage: ptrFloat(22)},
 	}
 	usage := &api.Usage{
 		FiveHour: &api.QuotaLimit{Utilization: 23},
@@ -75,8 +75,8 @@ func TestRenderWithUsage(t *testing.T) {
 
 func TestRenderWithoutUsage(t *testing.T) {
 	s := ClaudeStatus{
-		Model:         ModelInfo{DisplayName: "Opus"},
-		ContextWindow: ContextWindow{UsedPercentage: ptrFloat(50)},
+		Model:         modelInfo{DisplayName: "Opus"},
+		ContextWindow: contextWindow{UsedPercentage: ptrFloat(50)},
 	}
 	out := Render(s, testTheme(), "", nil)
 	if !strings.Contains(out, "Opus") {
@@ -89,8 +89,8 @@ func TestRenderWithoutUsage(t *testing.T) {
 
 func TestRenderContainsANSI(t *testing.T) {
 	s := ClaudeStatus{
-		Model:         ModelInfo{DisplayName: "Opus"},
-		ContextWindow: ContextWindow{UsedPercentage: ptrFloat(50)},
+		Model:         modelInfo{DisplayName: "Opus"},
+		ContextWindow: contextWindow{UsedPercentage: ptrFloat(50)},
 	}
 	out := Render(s, testTheme(), "Pro", nil)
 	if !strings.Contains(out, "\x1b[") {

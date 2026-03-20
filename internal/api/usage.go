@@ -75,7 +75,7 @@ func fetchAPI(token string) (*Usage, time.Duration, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, usageURL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, usageURL, http.NoBody)
 	if err != nil {
 		return nil, 0, err
 	}

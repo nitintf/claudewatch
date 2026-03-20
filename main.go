@@ -67,15 +67,15 @@ func run() error {
 	// Read credentials for plan detection and API access.
 	var plan string
 	var usage *api.Usage
-	creds, err := auth.Read()
-	if err == nil {
+	creds, credErr := auth.Read()
+	if credErr == nil {
 		plan = auth.PlanName(creds.SubscriptionType)
 		if creds.AccessToken != "" {
 			usage, _ = api.FetchUsage(creds.AccessToken)
 		}
 	}
 
-	output := statusline.Render(status, t, plan, usage)
+	output := statusline.Render(status, &t, plan, usage)
 	// Leading reset clears stale ANSI state from previous renders.
 	// Non-breaking spaces prevent the terminal from collapsing whitespace.
 	output = "\x1b[0m" + strings.ReplaceAll(output, " ", "\u00A0")
