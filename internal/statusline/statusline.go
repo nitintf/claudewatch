@@ -157,11 +157,10 @@ func renderCost(s ClaudeStatus, t *theme.Theme) string {
 		return ""
 	}
 	var formatted string
-	if cost < 0.01 {
+	switch {
+	case cost < 0.01:
 		formatted = fmt.Sprintf("$%.4f", cost)
-	} else if cost < 1 {
-		formatted = fmt.Sprintf("$%.2f", cost)
-	} else {
+	default:
 		formatted = fmt.Sprintf("$%.2f", cost)
 	}
 	return fg(t.Colors.Muted) + "cost " + reset +
