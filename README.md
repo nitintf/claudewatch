@@ -2,9 +2,11 @@
 
 A beautiful, themed status line for Claude Code with real-time usage tracking.
 
-```
-[Opus 4.6 | Max] | ctx ███ 23% | 5h █░░ 27% 1h03m | 7d ░░░ 2% Fri | cost $1.23
-```
+![claudewatch status line](docs/image.png)
+
+![claudewatch with context usage](docs/image-1.png)
+
+![claudewatch with cwd and git branch](docs/image-2.png)
 
 ## Features
 
