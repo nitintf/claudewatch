@@ -40,7 +40,7 @@ type costInfo struct {
 
 // Parse decodes Claude Code's JSON status.
 func Parse(data []byte) (ClaudeStatus, error) {
-	var s *ClaudeStatus
+	var s ClaudeStatus
 	if err := json.Unmarshal(data, &s); err != nil {
 		return ClaudeStatus{}, fmt.Errorf("parsing status JSON: %w", err)
 	}

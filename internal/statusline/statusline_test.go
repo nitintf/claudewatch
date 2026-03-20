@@ -64,7 +64,7 @@ func TestRenderWithUsage(t *testing.T) {
 		FiveHour: &api.QuotaLimit{Utilization: 23},
 		SevenDay: &api.QuotaLimit{Utilization: 2},
 	}
-	out := Render(s, testTheme(), "Pro", usage, defaultCfg())
+	out := Render(&s, testTheme(), "Pro", usage, defaultCfg())
 	if !strings.Contains(out, "Opus") {
 		t.Error("expected Opus in output")
 	}
@@ -84,7 +84,7 @@ func TestRenderWithoutUsage(t *testing.T) {
 		Model:         modelInfo{DisplayName: "Opus"},
 		ContextWindow: contextWindow{UsedPercentage: ptrFloat(50)},
 	}
-	out := Render(s, testTheme(), "", nil, defaultCfg())
+	out := Render(&s, testTheme(), "", nil, defaultCfg())
 	if !strings.Contains(out, "Opus") {
 		t.Error("expected Opus in output")
 	}
@@ -98,7 +98,7 @@ func TestRenderContainsANSI(t *testing.T) {
 		Model:         modelInfo{DisplayName: "Opus"},
 		ContextWindow: contextWindow{UsedPercentage: ptrFloat(50)},
 	}
-	out := Render(s, testTheme(), "Pro", nil, defaultCfg())
+	out := Render(&s, testTheme(), "Pro", nil, defaultCfg())
 	if !strings.Contains(out, "\x1b[") {
 		t.Error("expected ANSI escape codes in output")
 	}
@@ -110,7 +110,7 @@ func TestRenderCost(t *testing.T) {
 		ContextWindow: contextWindow{UsedPercentage: ptrFloat(30)},
 		Cost:          costInfo{TotalCostUSD: 1.23},
 	}
-	out := Render(s, testTheme(), "", nil, defaultCfg())
+	out := Render(&s, testTheme(), "", nil, defaultCfg())
 	if !strings.Contains(out, "$1.23") {
 		t.Error("expected $1.23 in output")
 	}
@@ -137,7 +137,7 @@ func TestRenderSegmentsDisabled(t *testing.T) {
 		ShowExtra: &f,
 		ShowCost:  &f,
 	}
-	out := Render(s, testTheme(), "Pro", usage, cfg)
+	out := Render(&s, testTheme(), "Pro", usage, cfg)
 	if strings.Contains(out, "Pro") {
 		t.Error("plan should be hidden")
 	}
