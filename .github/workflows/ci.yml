@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
     branches: [main]
 
@@ -44,6 +45,50 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [lint, build]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+
+      - name: Build binaries
+        run: |
+          GOOS=darwin GOARCH=arm64 go build -o claudewatch-darwin-arm64 .
+          GOOS=darwin GOARCH=amd64 go build -o claudewatch-darwin-amd64 .
+          GOOS=linux GOARCH=amd64 go build -o claudewatch-linux-amd64 .
+          GOOS=linux GOARCH=arm64 go build -o claudewatch-linux-arm64 .
+          GOOS=windows GOARCH=amd64 go build -o claudewatch-windows-amd64.exe .
+          GOOS=windows GOARCH=arm64 go build -o claudewatch-windows-arm64.exe .
+
+      - name: Extract changelog
+        id: changelog
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          BODY=$(sed -n "/^## ${TAG}/,/^## v/{/^## v/!p;}" CHANGELOG.md | sed '1d;$d' | sed '/^$/N;/^\n$/d')
+          echo "body<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$BODY" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.changelog.outputs.body }}
+          files: |
+            claudewatch-darwin-arm64
+            claudewatch-darwin-amd64
+            claudewatch-linux-amd64
+            claudewatch-linux-arm64
+            claudewatch-windows-amd64.exe
+            claudewatch-windows-arm64.exe
+
+  latest:
+    name: Latest (dev)
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: [lint, build]
     steps:
@@ -58,6 +103,9 @@ jobs:
           GOOS=darwin GOARCH=arm64 go build -o claudewatch-darwin-arm64 .
           GOOS=darwin GOARCH=amd64 go build -o claudewatch-darwin-amd64 .
           GOOS=linux GOARCH=amd64 go build -o claudewatch-linux-amd64 .
+          GOOS=linux GOARCH=arm64 go build -o claudewatch-linux-arm64 .
+          GOOS=windows GOARCH=amd64 go build -o claudewatch-windows-amd64.exe .
+          GOOS=windows GOARCH=arm64 go build -o claudewatch-windows-arm64.exe .
 
       - name: Update latest tag
         run: |
@@ -68,10 +116,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: Latest
-          body: Auto-built from main branch
+          name: Latest (dev)
+          body: Auto-built from main branch. For stable releases use a versioned tag.
           files: |
             claudewatch-darwin-arm64
             claudewatch-darwin-amd64
             claudewatch-linux-amd64
-          prerelease: false
+            claudewatch-linux-arm64
+            claudewatch-windows-amd64.exe
+            claudewatch-windows-arm64.exe
+          prerelease: true

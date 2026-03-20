@@ -1,6 +1,6 @@
 BINARY_NAME=claudewatch
 
-.PHONY: all build test lint fmt vet clean tidy install
+.PHONY: all build test lint fmt vet clean tidy install release-patch release-minor release-major
 
 all: lint test build
 
@@ -28,3 +28,12 @@ tidy:
 install: build
 	cp $(BINARY_NAME) $(GOPATH)/bin/$(BINARY_NAME)
 	./$(BINARY_NAME) install
+
+release-patch:
+	./scripts/release.sh patch
+
+release-minor:
+	./scripts/release.sh minor
+
+release-major:
+	./scripts/release.sh major

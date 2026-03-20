@@ -155,9 +155,18 @@ func uninstall() error {
 	// Remove usage cache.
 	_ = os.Remove(filepath.Join(os.TempDir(), "claudewatch-usage.json"))
 
+	// Remove the binary itself.
+	binPath, _ := os.Executable()
+	if binPath != "" {
+		_ = os.Remove(binPath)
+	}
+
 	fmt.Printf("Uninstalled claudewatch\n")
 	fmt.Printf("  removed statusLine from %s\n", settingsPath)
 	fmt.Printf("  removed config dir %s\n", cfgDir)
+	if binPath != "" {
+		fmt.Printf("  removed binary %s\n", binPath)
+	}
 	fmt.Printf("\nRestart Claude Code to apply.\n")
 	return nil
 }
