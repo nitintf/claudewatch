@@ -3,7 +3,7 @@
 A beautiful, themed status line for Claude Code with real-time usage tracking.
 
 ```
-[Opus 4.6 | Max] | ctx ███ 23% | 5h █░░ 27% 1h03m | 7d ░░░ 2% Fri
+[Opus 4.6 | Max] | ctx ███ 23% | 5h █░░ 27% 1h03m | 7d ░░░ 2% Fri | cost $1.23
 ```
 
 ## Features
@@ -38,6 +38,13 @@ claudewatch install
 claude plugin add github.com/nitintf/claudewatch
 ```
 
+Or via the marketplace:
+
+```bash
+/plugin marketplace add nitintf/claudewatch
+/plugin install claudewatch@claudewatch
+```
+
 Then run `/claudewatch:setup` inside Claude Code to install the binary and configure your theme.
 
 Restart Claude Code after installing.
@@ -51,6 +58,7 @@ Restart Claude Code after installing.
 | 5-hour limit | `5h █░░ 27% 1h03m` | Anthropic usage API |
 | 7-day limit | `7d ░░░ 2% Fri` | Anthropic usage API |
 | Extra usage | `$2/$100` | Anthropic usage API (when enabled) |
+| Session cost | `cost $1.23` | Claude Code status JSON |
 
 Colors shift: blue < 50%, orange 50-80%, red > 80%.
 
@@ -60,9 +68,16 @@ Colors shift: blue < 50%, orange 50-80%, red > 80%.
 
 ```toml
 theme = "tokyo-night"
+
+# Toggle segments (all true by default)
+show_plan  = true    # Plan name in model bracket
+show_5h    = true    # 5-hour usage quota
+show_7d    = true    # 7-day usage quota
+show_extra = true    # Pay-as-you-go extra usage
+show_cost  = true    # Session cost
 ```
 
-That's it. Plan and usage limits are auto-detected.
+Model name and context window are always shown. Plan and usage limits are auto-detected.
 
 ## Themes
 

@@ -9,14 +9,34 @@ import (
 
 // Config holds the user's claudewatch configuration.
 type Config struct {
-	Theme string `toml:"theme"`
+	Theme     string `toml:"theme"`
+	ShowPlan  *bool  `toml:"show_plan,omitempty"`
+	Show5h    *bool  `toml:"show_5h,omitempty"`
+	Show7d    *bool  `toml:"show_7d,omitempty"`
+	ShowExtra *bool  `toml:"show_extra,omitempty"`
+	ShowCost  *bool  `toml:"show_cost,omitempty"`
 }
+
+func boolPtr(b bool) *bool { return &b }
 
 // DefaultConfig returns the default configuration.
 func DefaultConfig() Config {
 	return Config{
-		Theme: "dracula",
+		Theme:     "dracula",
+		ShowPlan:  boolPtr(true),
+		Show5h:    boolPtr(true),
+		Show7d:    boolPtr(true),
+		ShowExtra: boolPtr(true),
+		ShowCost:  boolPtr(true),
 	}
+}
+
+// Enabled returns whether a segment is enabled (nil defaults to true).
+func Enabled(b *bool) bool {
+	if b == nil {
+		return true
+	}
+	return *b
 }
 
 // Dir returns the config directory path (~/.config/claudewatch).

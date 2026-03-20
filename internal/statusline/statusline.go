@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/nitintf/claudewatch/internal/api"
+	"github.com/nitintf/claudewatch/internal/config"
 	"github.com/nitintf/claudewatch/internal/theme"
 )
 
@@ -63,30 +64,39 @@ func hexToRGB(hex string) (r, g, b int) {
 }
 
 // Render produces the themed status line with raw ANSI codes.
-func Render(s ClaudeStatus, t *theme.Theme, plan string, usage *api.Usage) string {
+func Render(s ClaudeStatus, t *theme.Theme, plan string, usage *api.Usage, cfg *config.Config) string {
 	pipe := dim + fg(t.Colors.Muted) + " | " + reset
 
+	showPlan := plan != "" && config.Enabled(cfg.ShowPlan)
 	parts := []string{
-		renderModel(s, t, plan),
+		renderModel(s, t, plan, showPlan),
 		renderContext(s, t),
 	}
 
 	if usage != nil {
-		if usage.FiveHour != nil {
+		if usage.FiveHour != nil && config.Enabled(cfg.Show5h) {
 			parts = append(parts, renderQuota("5h", usage.FiveHour, t))
 		}
-		if usage.SevenDay != nil {
+		if usage.SevenDay != nil && config.Enabled(cfg.Show7d) {
 			parts = append(parts, renderQuota("7d", usage.SevenDay, t))
 		}
-		if extra := renderExtra(usage.ExtraUsage, t); extra != "" {
-			parts = append(parts, extra)
+		if config.Enabled(cfg.ShowExtra) {
+			if extra := renderExtra(usage.ExtraUsage, t); extra != "" {
+				parts = append(parts, extra)
+			}
+		}
+	}
+
+	if config.Enabled(cfg.ShowCost) {
+		if cost := renderCost(s, t); cost != "" {
+			parts = append(parts, cost)
 		}
 	}
 
 	return strings.Join(parts, pipe)
 }
 
-func renderModel(s ClaudeStatus, t *theme.Theme, plan string) string {
+func renderModel(s ClaudeStatus, t *theme.Theme, plan string, showPlan bool) string {
 	name := s.Model.DisplayName
 	if name == "" {
 		name = s.Model.ID
@@ -94,7 +104,7 @@ func renderModel(s ClaudeStatus, t *theme.Theme, plan string) string {
 
 	result := fg(t.Colors.Muted) + "[" + reset +
 		fg(t.Colors.Accent) + name + reset
-	if plan != "" {
+	if showPlan {
 		result += fg(t.Colors.Muted) + " | " + reset +
 			fg(t.Colors.Fg) + plan + reset
 	}
@@ -139,6 +149,23 @@ func renderExtra(extra *api.ExtraUsage, t *theme.Theme) string {
 	color := barColor(pct, t)
 	return fg(color) + fmt.Sprintf("$%d", used) + reset +
 		fg(t.Colors.Muted) + fmt.Sprintf("/$%d", limit) + reset
+}
+
+func renderCost(s ClaudeStatus, t *theme.Theme) string {
+	cost := s.Cost.TotalCostUSD
+	if cost <= 0 {
+		return ""
+	}
+	var formatted string
+	if cost < 0.01 {
+		formatted = fmt.Sprintf("$%.4f", cost)
+	} else if cost < 1 {
+		formatted = fmt.Sprintf("$%.2f", cost)
+	} else {
+		formatted = fmt.Sprintf("$%.2f", cost)
+	}
+	return fg(t.Colors.Muted) + "cost " + reset +
+		fg(t.Colors.Fg) + formatted + reset
 }
 
 // progressBar renders filled and empty blocks with foreground colors.
