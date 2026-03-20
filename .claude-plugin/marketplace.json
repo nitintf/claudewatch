@@ -1,0 +1,20 @@
+{
+  "name": "claudewatch",
+  "owner": {
+    "name": "Nitin Panwar",
+    "email": ""
+  },
+  "metadata": {
+    "description": "Beautiful themed status line for Claude Code with real-time usage tracking, progress bars, and 10 built-in themes",
+    "version": "0.2.0"
+  },
+  "plugins": [
+    {
+      "name": "claudewatch",
+      "source": "./",
+      "description": "Beautiful themed status line for Claude Code with real-time usage tracking, progress bars, and 10 built-in themes",
+      "category": "productivity",
+      "tags": ["statusline", "theme", "usage-tracking"]
+    }
+  ]
+}
